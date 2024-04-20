@@ -112,3 +112,6 @@ WHERE [name]='Nuran'
 SELECT*
 FROM SchoolStudents
 WHERE [course] = 2
+
+
+--NUMUNE EDIRIK

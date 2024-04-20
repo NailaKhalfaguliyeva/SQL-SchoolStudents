@@ -111,7 +111,7 @@ WHERE [name]='Nuran'
 
 SELECT*
 FROM SchoolStudents
-WHERE [course] = 2
+WHERE [course] = 3
 
 
 --NUMUNE EDIRIK

@@ -105,10 +105,26 @@ INSERT INTO TeacherLecture(TeacherId,LectureId) VALUES(1,1);
 INSERT INTO TeacherLecture(TeacherId,LectureId) VALUES(1,3);
 INSERT INTO TeacherLecture(TeacherId,LectureId) VALUES(1,4);
 
+INSERT INTO ClassSubjects(ClassId,SubjectId) VALUES(1,3);
+INSERT INTO ClassSubjects(ClassId,SubjectId) VALUES(1,2);
+INSERT INTO ClassSubjects(ClassId,SubjectId) VALUES(1,4);
+INSERT INTO ClassSubjects(ClassId,SubjectId) VALUES(2,3);
 
 
-SELECT * FROM Lecture
+INSERT INTO FacultyTeacher(FacultyId,TeacherId) VALUES(1,3);
+INSERT INTO FacultyTeacher(FacultyId,TeacherId) VALUES(1,2);
+INSERT INTO FacultyTeacher(FacultyId,TeacherId) VALUES(2,3);
+INSERT INTO FacultyTeacher(FacultyId,TeacherId) VALUES(3,1);
 
+
+
+
+
+SELECT *
+FROM Faculty
+
+SELECT *
+FROM Teacher
 
 
 ----1----“Software Development” şöbəsində müəllimlərin sayını göstərin.+
@@ -117,7 +133,7 @@ SELECT COUNT(TeacherFullName) AS TeacherNumber
 FROM Teacher
 
 
-----2----“Dave McQueen” müəllimin verdiyi mühazirələrin sayını çap edin.
+----2----“Dave McQueen” müəllimin verdiyi mühazirələrin sayını çap edin.+
 
 
 select Teacher.TeacherFullName ,c as lectureCount
@@ -130,21 +146,16 @@ from (select TeacherId as ti ,COUNT(LectureId) as c
 JOIN Teacher ON Teacher.Id = sq.ti
 
 ----3----"201" otağında keçirilən dərslərin sayını göstərin.
-
 SELECT COUNT(SubjectName) AS SubjectNumber
-FROM Subjects
-WHERE ClassNumber=201;
-JOIN Class ON Subjects.ClassId=Class.Class(Id)
-
+FROM Subjects,Class
+JOIN ClassSubjects ON ClassSubjects.ClassId=ClassSubjects.SubjectId
+WHERE ClassNumber=201
 
 
 ----4----Sinif otaqlarının adlarını və onlarda keçirilən mühazirələrin sayını göstərin.
 
 
-SELECT COUNT(LectureName) AS LectureNumber
-FROM Lecture,
-WHERE ClassNumber
-JOIN JOIN Class ON Lecture.ClassId=Class.Class(Id)
+
 
 
 
@@ -154,6 +165,11 @@ JOIN JOIN Class ON Lecture.ClassId=Class.Class(Id)
 
 
 ----6----Kompüter elmləri fakültəsində müəllimlərin orta əmək haqqını tapın.
+SELECT AVG(TeacherSalary)AS TeacherSalary
+FROM Teacher,Faculty
+JOIN FacultyTeacher ON FacultyTeacher.FacultyId=FacultyTeacher.TeacherId
+WHERE FacultyName='Computer Science'
+
 
 
 

@@ -125,18 +125,24 @@ INSERT INTO ClassLecture(ClassId,LectureId) VALUES(4,5);
 INSERT INTO ClassLecture(ClassId,LectureId) VALUES(3,4);
 
 
+INSERT INTO FacultyAndSubject(FacultyId,SubjectId) VALUES(3,1);
+INSERT INTO FacultyAndSubject(FacultyId,SubjectId) VALUES(3,5);
+INSERT INTO FacultyAndSubject(FacultyId,SubjectId) VALUES(1,3);
+INSERT INTO FacultyAndSubject(FacultyId,SubjectId) VALUES(2,2);
+INSERT INTO FacultyAndSubject(FacultyId,SubjectId) VALUES(2,4);
+INSERT INTO FacultyAndSubject(FacultyId,SubjectId) VALUES(1,4);
 
 
 
 
 SELECT *
-FROM ClassL
+FROM Faculty
 
 SELECT *
-FROM Lecture
+FROM Subjects
 
 
-----1----“Software Development” şöbəsində müəllimlərin sayını göstərin.+
+----1----“Software Development” şöbəsində müəllimlərin sayını göstərin.
 
 SELECT COUNT(TeacherFullName) AS TeacherNumber
 FROM Teacher
@@ -162,14 +168,21 @@ JOIN Subjects ON Subjects.Id = ClassSubjects.SubjectId
 JOIN Class ON ClassSubjects.ClassId = Class.Id
 WHERE ClassNumber=201
 
-----4----Sinif otaqlarının adlarını və onlarda keçirilən mühazirələrin sayını göstərin.(Burada otagin adlarini gostermir,her Id ve hemin Id aid olan Lecture sayini gosterir)--
+----4----Sinif otaqlarının adlarını və onlarda keçirilən mühazirələrin sayını göstərin.
 
-SELECT COUNT (Lecture.LectureName) AS LectureNumber
+SELECT ClassNumber,COUNT (Lecture.LectureName) AS LectureNumber
 FROM ClassLecture
 JOIN Lecture ON Lecture.Id=ClassLecture.LectureId
 JOIN Class ON ClassLecture.ClassId=Class.Id
 GROUP BY ClassNumber
 
+
+select *
+from ClassLecture
+select *
+from Class
+select *
+from Lecture
 
 
 ----5----“Jack Underhill” müəlliminin mühazirələrində iştirak edən tələbələrin sayını çap edin.
@@ -200,13 +213,15 @@ SELECT *
 FROM FacultyTeacher
 JOIN Faculty ON Faculty.Id=FacultyTeacher.FacultyId
 
-----7----Bütün qruplar arasında tələbələrin minimum və maksimum sayını çap edin.(min ve max edende her iki halda da say yox  ad gosterir) 
+----7----Bütün qruplar arasında tələbələrin minimum və maksimum sayını çap edin.(min ve max edende nese sehvlik bas verir grupun adi ve
+																	--telebe adi verir,asagida baxmaq select yazdiqlarimda ise coxlu tekrarlar bas verir
+																						--Men amma bir defe insert etmisem)) 
 
-SELECT MIN(Student.StudentName) AS StudentNumber
+SELECT GroupName,MIN(Student.StudentName) AS Student
 FROM AllGroup
 JOIN AllGroupAndStudent ON AllGroupAndStudent.GroupId=GroupId
 JOIN Student ON StudendtId=AllGroupAndStudent.StudendtId
-GROUP BY GroupId
+GROUP BY GroupName
 
 
 
@@ -217,43 +232,41 @@ FROM AllGroup
 SELECT *
 FROM Student
 
-----8----Departamentlər üzrə orta maliyyələşdirmə fondunu göstərin.(ortalamani sehv gosterir)
+----8----Departamentlər üzrə orta maliyyələşdirmə fondunu göstərin.
 
-SELECT AVG(Teacher.TeacherSalary) AS Salary
+SELECT DepartmentFullName,AVG(Teacher.TeacherSalary) AS Salary
 FROM Department
 JOIN TeacherAndDepartment ON TeacherAndDepartment.DepartmentId=Department.Id
 JOIN Teacher ON Teacher.Id=TeacherAndDepartment.TeacherId
+GROUP BY DepartmentFullName
 
 
+----9----Müəllimlərin tam adlarını və onların tədris etdikləri fənlərin sayını göstərin.
+																		---burada ad ve sayi cixartdim amma her muellim ucun 144 gosterir
 
-----9----Müəllimlərin tam adlarını və onların tədris etdikləri fənlərin sayını göstərin.(burada hem sayi cox gosterir hem de adi gostermir) 
-
-
-SELECT COUNT(Lecture.LectureName) AS LECTURENUMBER
-FROM Teacher
-JOIN TeacherLecture ON TeacherLecture.TeacherId=TeacherId
-JOIN Lecture ON LectureId=TeacherLecture.LectureId
+SELECT TeacherFullName,COUNT(Lecture.LectureName) AS LECTURENUMBER
+FROM TeacherLecture
+JOIN Teacher ON TeacherLecture.TeacherId=TeacherId
+JOIN Lecture ON LectureId=TeacherLecture.LectureId					
 GROUP BY TeacherFullName
 
 
-----10---Həftənin hər günü mühazirələrin sayını çap edin.(BURADA DA SAY SEHVDIR gunu de GOSTERMIR)
+----10---Həftənin hər günü mühazirələrin sayını çap edin.+
 
-SELECT COUNT(Lecture.LectureName) AS LECTURENUMBER
+SELECT DaysOfTheWeek,COUNT(Lecture.LectureName) AS LECTURENUMBER
 FROM AllWeeklyprogram
-JOIN Lecture ON LectureId=AllWeeklyprogram.LectureId
+JOIN Lecture ON AllWeeklyprogram.LectureId = Lecture.Id
 GROUP BY DaysOfTheWeek
-
- 
-
-
 
 ----11---Sinif otaqlarının nömrələrini və mühazirələri oxunan kafedraların sayını göstərin. 
 
 
 
 
-
 ----12---Fakültələrin adlarını və onlarda tədris olunan fənlərin sayını göstərin. 
+
+
+
 
 
 

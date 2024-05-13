@@ -214,8 +214,8 @@ FROM FacultyTeacher
 JOIN Faculty ON Faculty.Id=FacultyTeacher.FacultyId
 
 ----7----Bütün qruplar arasında tələbələrin minimum və maksimum sayını çap edin.(min ve max edende nese sehvlik bas verir grupun adi ve
-																	--telebe adi verir,asagida baxmaq select yazdiqlarimda ise coxlu tekrarlar bas verir
-																						--Men amma bir defe insert etmisem)) 
+					--telebe adi verir,asagida baxmaq select yazdiqlarimda ise coxlu tekrarlar bas verir
+					--Men amma bir defe insert etmisem)) 
 
 SELECT GroupName,MIN(Student.StudentName) AS Student
 FROM AllGroup
@@ -242,7 +242,7 @@ GROUP BY DepartmentFullName
 
 
 ----9----Müəllimlərin tam adlarını və onların tədris etdikləri fənlərin sayını göstərin.
-																		---burada ad ve sayi cixartdim amma her muellim ucun 144 gosterir
+				---burada ad ve sayi cixartdim amma her muellim ucun 144 gosterir
 
 SELECT TeacherFullName,COUNT(Lecture.LectureName) AS LECTURENUMBER
 FROM TeacherLecture

@@ -117,14 +117,23 @@ INSERT INTO FacultyTeacher(FacultyId,TeacherId) VALUES(2,3);
 INSERT INTO FacultyTeacher(FacultyId,TeacherId) VALUES(3,1);
 
 
+INSERT INTO ClassLecture(ClassId,LectureId) VALUES(1,2);
+INSERT INTO ClassLecture(ClassId,LectureId) VALUES(1,3);
+INSERT INTO ClassLecture(ClassId,LectureId) VALUES(2,2);
+INSERT INTO ClassLecture(ClassId,LectureId) VALUES(5,6);
+INSERT INTO ClassLecture(ClassId,LectureId) VALUES(4,5);
+INSERT INTO ClassLecture(ClassId,LectureId) VALUES(3,4);
+
+
+
 
 
 
 SELECT *
-FROM Faculty
+FROM ClassL
 
 SELECT *
-FROM Teacher
+FROM Lecture
 
 
 ----1----“Software Development” şöbəsində müəllimlərin sayını göstərin.+
@@ -145,17 +154,21 @@ from (select TeacherId as ti ,COUNT(LectureId) as c
 	  GROUP BY TeacherId ) as sq
 JOIN Teacher ON Teacher.Id = sq.ti
 
-----3----"201" otağında keçirilən dərslərin sayını göstərin.
-SELECT COUNT(SubjectName) AS SubjectNumber
-FROM Subjects,Class
-JOIN ClassSubjects ON ClassSubjects.ClassId=ClassSubjects.SubjectId
+----3----"201" otağında keçirilən dərslərin sayını göstərin.+
+
+SELECT COUNT (Subjects.SubjectName) AS SUBJECTNUMBER
+FROM ClassSubjects
+JOIN Subjects ON Subjects.Id = ClassSubjects.SubjectId
+JOIN Class ON ClassSubjects.ClassId = Class.Id
 WHERE ClassNumber=201
 
+----4----Sinif otaqlarının adlarını və onlarda keçirilən mühazirələrin sayını göstərin.(Burada otagin adlarini gostermir,her Id ve hemin Id aid olan Lecture sayini gosterir)--
 
-----4----Sinif otaqlarının adlarını və onlarda keçirilən mühazirələrin sayını göstərin.
-
-
-
+SELECT COUNT (Lecture.LectureName) AS LectureNumber
+FROM ClassLecture
+JOIN Lecture ON Lecture.Id=ClassLecture.LectureId
+JOIN Class ON ClassLecture.ClassId=Class.Id
+GROUP BY ClassNumber
 
 
 
@@ -164,38 +177,78 @@ WHERE ClassNumber=201
 
 
 
-----6----Kompüter elmləri fakültəsində müəllimlərin orta əmək haqqını tapın.
-SELECT AVG(TeacherSalary)AS TeacherSalary
-FROM Teacher,Faculty
-JOIN FacultyTeacher ON FacultyTeacher.FacultyId=FacultyTeacher.TeacherId
+
+
+
+
+----6----Kompüter elmləri fakültəsində müəllimlərin orta əmək haqqını tapın.+
+SELECT AVG(Teacher.TeacherSalary) AS TeacherSalary
+FROM Faculty
+JOIN FacultyTeacher ON FacultyTeacher.FacultyId=Faculty.Id
+JOIN Teacher ON Teacher.Id=FacultyTeacher.TeacherId
 WHERE FacultyName='Computer Science'
 
+SELECT AVG(Teacher.TeacherSalary)			
+FROM Teacher
+select *
+from  FacultyTeacher
+
+select *
+from Faculty
+
+SELECT *
+FROM FacultyTeacher
+JOIN Faculty ON Faculty.Id=FacultyTeacher.FacultyId
+
+----7----Bütün qruplar arasında tələbələrin minimum və maksimum sayını çap edin.(min ve max edende her iki halda da say yox  ad gosterir) 
+
+SELECT MIN(Student.StudentName) AS StudentNumber
+FROM AllGroup
+JOIN AllGroupAndStudent ON AllGroupAndStudent.GroupId=GroupId
+JOIN Student ON StudendtId=AllGroupAndStudent.StudendtId
+GROUP BY GroupId
 
 
 
+select *
+from AllGroupAndStudent
+select *
+FROM AllGroup
+SELECT *
+FROM Student
 
-----7----Bütün qruplar arasında tələbələrin minimum və maksimum sayını çap edin. 
+----8----Departamentlər üzrə orta maliyyələşdirmə fondunu göstərin.(ortalamani sehv gosterir)
 
-
-
-
-
-----8----Departamentlər üzrə orta maliyyələşdirmə fondunu göstərin.
-
-
-
-
-
-----9----Müəllimlərin tam adlarını və onların tədris etdikləri fənlərin sayını göstərin. 
-
+SELECT AVG(Teacher.TeacherSalary) AS Salary
+FROM Department
+JOIN TeacherAndDepartment ON TeacherAndDepartment.DepartmentId=Department.Id
+JOIN Teacher ON Teacher.Id=TeacherAndDepartment.TeacherId
 
 
 
-----10---Həftənin hər günü mühazirələrin sayını çap edin.
+----9----Müəllimlərin tam adlarını və onların tədris etdikləri fənlərin sayını göstərin.(burada hem sayi cox gosterir hem de adi gostermir) 
+
+
+SELECT COUNT(Lecture.LectureName) AS LECTURENUMBER
+FROM Teacher
+JOIN TeacherLecture ON TeacherLecture.TeacherId=TeacherId
+JOIN Lecture ON LectureId=TeacherLecture.LectureId
+GROUP BY TeacherFullName
+
+
+----10---Həftənin hər günü mühazirələrin sayını çap edin.(BURADA DA SAY SEHVDIR gunu de GOSTERMIR)
+
+SELECT COUNT(Lecture.LectureName) AS LECTURENUMBER
+FROM AllWeeklyprogram
+JOIN Lecture ON LectureId=AllWeeklyprogram.LectureId
+GROUP BY DaysOfTheWeek
+
+ 
 
 
 
 ----11---Sinif otaqlarının nömrələrini və mühazirələri oxunan kafedraların sayını göstərin. 
+
 
 
 

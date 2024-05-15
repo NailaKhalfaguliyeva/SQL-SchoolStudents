@@ -172,10 +172,10 @@ WHERE ClassNumber=201
 
 SELECT ClassNumber,COUNT (Lecture.LectureName) AS LectureNumber
 FROM ClassLecture
-JOIN Lecture ON Lecture.Id=ClassLecture.LectureId
+JOIN Lecture ON Lecture.Id=ClassLecture.LectureId	--burada da her seyi gosterir amma cox gosterir tekrarlama var
 JOIN Class ON ClassLecture.ClassId=Class.Id
 GROUP BY ClassNumber
-
+select * from ClassLecture
 
 select *
 from ClassLecture
@@ -187,12 +187,15 @@ from Lecture
 
 ----5----“Jack Underhill” müəlliminin mühazirələrində iştirak edən tələbələrin sayını çap edin.
 
+SELECT COUNT(StudentName) AS STUDENT
+FROM TeacherLecture
+JOIN Student ON Student.Id=Student.Id  
+JOIN Teacher ON TeacherLecture.LectureId=Teacher.Id
+WHERE TeacherFullName='Jack Underhill'
 
 
-
-
-
-
+SELECT *
+FROM TeacherLecture
 
 ----6----Kompüter elmləri fakültəsində müəllimlərin orta əmək haqqını tapın.+
 SELECT AVG(Teacher.TeacherSalary) AS TeacherSalary
@@ -213,13 +216,14 @@ SELECT *
 FROM FacultyTeacher
 JOIN Faculty ON Faculty.Id=FacultyTeacher.FacultyId
 
-----7----Bütün qruplar arasında tələbələrin minimum və maksimum sayını çap edin.(min ve max edende nese sehvlik bas verir grupun adi ve
-					--telebe adi verir,asagida baxmaq select yazdiqlarimda ise coxlu tekrarlar bas verir
-					--Men amma bir defe insert etmisem)) 
+----7----Bütün qruplar arasında tələbələrin minimum və maksimum sayını çap edin.
+						--(min ve max edende nese sehvlik bas verir grupun adi ve
+					 --telebe adi verir,asagida baxmaq select yazdiqlarimda ise coxlu tekrarlar bas verir
+						--Men amma bir defe insert etmisem))
 
-SELECT GroupName,MIN(Student.StudentName) AS Student
+SELECT GroupName,Min(Student.StudentName) AS Student
 FROM AllGroup
-JOIN AllGroupAndStudent ON AllGroupAndStudent.GroupId=GroupId
+JOIN AllGroupAndStudent ON AllGroupAndStudent.GroupId=GroupId	
 JOIN Student ON StudendtId=AllGroupAndStudent.StudendtId
 GROUP BY GroupName
 
@@ -242,13 +246,15 @@ GROUP BY DepartmentFullName
 
 
 ----9----Müəllimlərin tam adlarını və onların tədris etdikləri fənlərin sayını göstərin.
-				---burada ad ve sayi cixartdim amma her muellim ucun 144 gosterir
+							
 
 SELECT TeacherFullName,COUNT(Lecture.LectureName) AS LECTURENUMBER
 FROM TeacherLecture
-JOIN Teacher ON TeacherLecture.TeacherId=TeacherId
-JOIN Lecture ON LectureId=TeacherLecture.LectureId					
+JOIN Teacher ON TeacherLecture.TeacherId=Teacher.Id
+JOIN Lecture ON Lecture.Id=TeacherLecture.LectureId					
 GROUP BY TeacherFullName
+
+
 
 
 ----10---Həftənin hər günü mühazirələrin sayını çap edin.+
@@ -258,14 +264,19 @@ FROM AllWeeklyprogram
 JOIN Lecture ON AllWeeklyprogram.LectureId = Lecture.Id
 GROUP BY DaysOfTheWeek
 
-----11---Sinif otaqlarının nömrələrini və mühazirələri oxunan kafedraların sayını göstərin. 
+----11---Sinif otaqlarının nömrələrini və mühazirələri oxunan kafedraların sayını göstərin.
+SELECT ClassNumber,DepartmentFullName,COUNT(Department.DepartmentFullName) AS DEPARTMENT
+FROM ClassLecture
+JOIN Department ON Department.Id=Department.Id		--burada her birini cixartdim amma cox gosterir													 
+JOIN Class ON ClassLecture.ClassId=Class.Id
+GROUP BY ClassNumber,DepartmentFullName
+
+SELECT *
+FROM Class
 
 
 
-
-----12---Fakültələrin adlarını və onlarda tədris olunan fənlərin sayını göstərin. 
-
-
+----12---Fakültələrin adlarını və onlarda tədris olunan fənlərin sayını göstərin.
 
 
 
